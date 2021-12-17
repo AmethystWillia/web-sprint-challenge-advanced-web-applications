@@ -25,24 +25,39 @@ test('renders headline, author from the article when passed in through props', (
     const summary = screen.queryByTestId('summary');
     const body = screen.queryByTestId('body');
     // Assert
-    expect(headline).toBeInTheDocument();
-    expect(author).toBeInTheDocument();
-    expect(summary).toBeInTheDocument();
-    expect(body).toBeInTheDocument();
+    expect(headline).toHaveTextContent('headline test');
+    expect(author).toHaveTextContent('author test');
+    expect(summary).toHaveTextContent('summary test');
+    expect(body).toHaveTextContent('body test');
 });
 
 test('renders "Associated Press" when no author is given', ()=> {
     // Arrange
+    render (<Article article={{
+        headline: 'headline test',
+        summary: 'summary test',
+        body: 'body test',
+    }} />);
     // Act
+    const noAuthor = screen.queryByTestId('author')
     // Assert
-    expect(badVar).toBeInTheDocument();
+    expect(noAuthor).toHaveTextContent('Associated Press');
 });
 
 test('executes handleDelete when the delete button is pressed', ()=> {
+    const mockHandleDelete = jest.fn();
     // Arrange
+    render (<Article handleDelete={mockHandleDelete} article={{
+        headline: 'headline test',
+        author: 'author test',
+        summary: 'summary test',
+        body: 'body test',
+    }} />);
     // Act
+    const delButt = screen.getByTestId('deleteButton');
+    userEvent.click(delButt);
     // Assert
-    expect(badVar).toBeInTheDocument();
+    expect(mockHandleDelete).toBeCalled();
 });
 
 //Task List: 
