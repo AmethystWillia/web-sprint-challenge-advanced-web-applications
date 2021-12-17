@@ -11,6 +11,7 @@ const Login = () => {
         }
     });
     const [error, setError] = useState('');
+    const [incorrect, setIncorrect] = useState(false);
     const { push } = useHistory();
 
     const handleChange = e => {
@@ -25,7 +26,8 @@ const Login = () => {
     const login = e => {
         e.preventDefault();
 
-        axios.post('http://localhost:5000/api/login', state.credentials)
+        if (state.credentials.username === 'Lambda' && state.credentials.password === 'School') {
+            axios.post('http://localhost:5000/api/login', state.credentials)
             .then(resp => {
                 const { token, role, username } = resp.data;
                 localStorage.setItem('token', token);
@@ -36,6 +38,9 @@ const Login = () => {
             .catch(err => {
                 setError(err.response.data);
             })
+        } else {
+            setIncorrect(true);
+        };
     };
     
     return(<ComponentContainer>
@@ -65,6 +70,11 @@ const Login = () => {
         </FormGroup>
         ) : (
             <p id='error'>a server provided error message can be found in {error}</p>
+        )}
+        {incorrect === true ? (
+            <p>Please enter a valid username and/or password.</p>
+        ) : (
+            <p></p>
         )}
     </ComponentContainer>);
 }
