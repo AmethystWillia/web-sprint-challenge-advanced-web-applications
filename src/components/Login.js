@@ -10,6 +10,7 @@ const Login = () => {
             password: '',
         }
     });
+    const [error, setError] = useState('');
     const { push } = useHistory();
 
     const handleChange = e => {
@@ -33,7 +34,7 @@ const Login = () => {
                 push('/view');
             })
             .catch(err => {
-                console.error(err);
+                setError(err.response.data);
             })
     };
     
@@ -42,7 +43,8 @@ const Login = () => {
             <h1>Welcome to Blogger Pro</h1>
             <h2>Please enter your account information.</h2>
         </ModalContainer>
-        <FormGroup>
+        {error === '' ? (
+            <FormGroup>
             <Label>Username</Label>
             <Input
                 type='text'
@@ -61,7 +63,9 @@ const Login = () => {
             />
             <Button id='submit' onClick={login}>Log In</Button>
         </FormGroup>
-        <p id='error'>a server provided error message can be found in err.response.data</p>
+        ) : (
+            <p id='error'>a server provided error message can be found in {error}</p>
+        )}
     </ComponentContainer>);
 }
 
