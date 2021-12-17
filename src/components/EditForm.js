@@ -1,5 +1,8 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { useEffect } from 'react/cjs/react.development';
 import styled from 'styled-components';
+import { token } from '../mocks/credentials';
 
 const initialArticle = {
     id:"",
@@ -12,6 +15,21 @@ const initialArticle = {
 const EditForm = (props)=> {
     const [article, setArticle]  = useState(initialArticle);
     const {handleEdit, handleEditCancel, editId} = props;
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/articles/${editId }`, {
+            headers: {
+                authorization: token,
+            }
+        } )
+            .then(resp => {
+                setArticle(resp.data);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }, [editId]);
 
     const handleChange = (e)=> {
         setArticle({
