@@ -23,7 +23,15 @@ const View = (props) => {
     }, []);
 
     const handleDelete = (id) => {
-    }
+        axiosWithAuth()
+            .delete(`/articles/${id}`)
+                .then(resp => {
+                    setArticles(resp.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+    };
 
     const handleEdit = (article) => {
     }
@@ -31,11 +39,11 @@ const View = (props) => {
     const handleEditSelect = (id)=> {
         setEditing(true);
         setEditId(id);
-    }
+    };
 
     const handleEditCancel = ()=>{
         setEditing(false);
-    }
+    };
 
     return(<ComponentContainer>
         <HeaderContainer>View Articles</HeaderContainer>
